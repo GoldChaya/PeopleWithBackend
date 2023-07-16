@@ -11,12 +11,12 @@ class PersonRow extends React.Component {
     }
     
     render() {
-        const { firstName, lastName, age, id, isChecked } = this.props.person
+        const { firstName, lastName, age, id } = this.props.person
         return (
             <tr>
                 <td>
                     <div className="d-flex justify-content-center align-items-center">
-                        <input type="checkbox" className="form-check-input mt-2" checked={isChecked} onChange={this.ChangeCheckStatus} style={{ transform: "scale(1.5)" }} />
+                        <input type="checkbox" className="form-check-input mt-2"  onChange={this.ChangeCheckStatus} style={{ transform: "scale(1.5)" }} />
                     </div>
                 </td>
                 <td>{firstName}</td>

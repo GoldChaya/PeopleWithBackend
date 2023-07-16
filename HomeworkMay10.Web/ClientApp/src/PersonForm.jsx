@@ -10,8 +10,7 @@ class PersonForm extends React.Component {
             lastName: '',
             age: ''
         },
-        people: [],
-        isChecked: false
+        people: []
     }
     getAllPeople = () => {
         axios.get('api/people/getall').then(response => {
@@ -46,8 +45,8 @@ class PersonForm extends React.Component {
         })
 
     }
-    onDeleteClick = p => {
-        axios.post('api/people/delete', {p}).then(() => {
+    onDeleteClick = (p) => {
+        axios.post('api/people/delete', p).then(() => {
             this.getAllPeople();
         });
     }   
@@ -56,7 +55,7 @@ class PersonForm extends React.Component {
 
     render() {
         const { firstName, lastName, age, id } = this.state.person;
-        const { people, isChecked } = this.state;
+        const { people } = this.state;
         return (
             <div className="container" style={{ marginTop: 60 }}>
                 <div className="row" style={{ marginBottom: 20 }}>
@@ -111,7 +110,7 @@ class PersonForm extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {people.map((p) => <PersonRow key={p.id} person={p} isChecked={isChecked} onDeleteClick={this.onDeleteClick}/>)}
+                        {people.map((p) => <PersonRow key={p.id} person={p} onDeleteClick={() => this.onDeleteClick(p)}/>)}
                     </tbody>
                 </table>
             </div>
