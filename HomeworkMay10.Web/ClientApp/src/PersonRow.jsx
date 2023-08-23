@@ -23,7 +23,7 @@ class PersonRow extends React.Component {
                 <td>{lastName}</td>
                 <td>{age}</td>
                 <td>
-                    <button className="btn btn-warning">Edit</button>
+                    <button className="btn btn-warning" value={id} onClick={this.props.onEditClick}>Edit</button>
                     <button className="btn btn-danger" value={id} style={{ marginLeft: 10 }} onClick={this.props.onDeleteClick}>Delete</button>
                 </td>
             </tr>)

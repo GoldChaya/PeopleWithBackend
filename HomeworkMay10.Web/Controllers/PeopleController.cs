@@ -34,5 +34,13 @@ namespace HomeworkMay10.Web.Controllers
             var repo = new PersonRepository(_connectionString);
             repo.Delete(person.Id);
         }
+        [HttpPost]
+        [Route("editperson")]
+        public void UpdatePerson(Person person)
+        {
+            var repo = new PersonRepository(_connectionString);
+            repo.EditPerson(person);
+
+        }
     }
 }

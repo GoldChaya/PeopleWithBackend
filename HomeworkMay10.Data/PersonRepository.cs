@@ -31,5 +31,11 @@ namespace HomeworkMay10.Data
             using var context = new PeopleDataContext(_connectionString);
             context.Database.ExecuteSqlInterpolated($"DELETE FROM People WHERE Id = {id}");
         }
+        public void EditPerson (Person person)
+        {
+            using var context = new PeopleDataContext(_connectionString);
+            context.Update(person);
+            context.SaveChanges();
+        }
     }
 }

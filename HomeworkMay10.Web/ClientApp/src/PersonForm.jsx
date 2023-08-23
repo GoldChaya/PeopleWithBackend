@@ -11,7 +11,8 @@ class PersonForm extends React.Component {
             age: ''
         },
         isChecked: [],
-        people: []
+        people: [],
+        isEditMode: false
     }
     
     getAllPeople = () => {
@@ -56,34 +57,53 @@ class PersonForm extends React.Component {
         axios.post('api/people/delete', p).then(() => {
             this.getAllPeople();
         });
-    }   
+    } 
+    
+    onEditClick = (p) => {
+        this.setState({person: p});
+        this.setState({isEditMode: true});
+    }
 
     onCheckboxClick = (p) => { const {isChecked} = this.state;
         if(!isChecked.includes(p)){
             const copy = [...isChecked,p];
-            this.setState({isChecked:copy});
+            this.setState({isChecked: copy});
         }
         else{
             const copy = [...isChecked.filter(i => i !== p)];
-            this.setState({isChecked:copy});
+            this.setState({isChecked: copy});
         }
     }
 
     CheckAllPeople = () => {
         const copy=[...this.state.people];
-        this.setState({isChecked:copy});
+        this.setState({isChecked: copy});
     }
 
     UncheckAllPeople = () => {
         const copy = [];
-        this.setState({isChecked:copy});
+        this.setState({isChecked: copy});
+    }
+
+    onPersonEditClick = () => {
+        axios.post('/api/people/editperson',  this.state.person ).then(() => {
+            this.getAllPeople();
+            this.setState({
+                person: {
+                    firstName: '',
+                    lastName: '',
+                    age: ''
+                },
+                inEditMode: false,
+            });
+        });
     }
 
 
 
     render() {
         const { firstName, lastName, age, id } = this.state.person;
-        const { people } = this.state;
+        const { people, isEditMode } = this.state;
         return (
             <div className="container" style={{ marginTop: 60 }}>
                 <div className="row" style={{ marginBottom: 20 }}>
@@ -96,9 +116,15 @@ class PersonForm extends React.Component {
                     <div className="col-md-3">
                         <input type="text" className="form-control" placeholder="Age" name="age" onChange={this.onTextChange} value={age}/>
                     </div>
-                    <div className="col-md-3">
+                    {!isEditMode ? 
+                    (<div className="col-md-3">
                         <button className="btn btn-primary w-100" onClick={this.onAddClick}>Add</button>
-                    </div>
+                    </div>)
+                    :
+                    (<div className="col-md-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button className="btn btn-outline-primary me-md-2 col-6" onClick={this.onPersonEditClick}>Edit</button>
+                            <button className="btn btn-outline-primary col-6" onClick={()=> this.setState ({isEditMode: false, person: {firstName: '', lastName: '', age: ''},})}>Cancel</button>
+                    </div>)}
                 </div>
                 <table className="table table-hover table-striped table-bordered">
                     <thead>
@@ -120,7 +146,8 @@ class PersonForm extends React.Component {
                         person={p} 
                         onCheckboxClick={() => this.onCheckboxClick(p)}
                         isChecked = {this.state.isChecked.includes(p)} 
-                        onDeleteClick={() => this.onDeleteClick(p)}/>)}
+                        onDeleteClick={() => this.onDeleteClick(p)}
+                        onEditClick = {() =>this.onEditClick(p)}/>)}
                     </tbody>
                 </table>
             </div>
